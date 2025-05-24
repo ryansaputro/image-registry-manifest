@@ -21,6 +21,8 @@ spec:
           volumeMounts:
             - name: registry-storage
               mountPath: /var/lib/registry
+            - name: auth-volume
+              mountPath: /auth
           env:
             - name: REGISTRY_AUTH
               value: "htpasswd"
