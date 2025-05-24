@@ -20,8 +20,18 @@ spec:
             - containerPort: 80
           env:
             - name: REGISTRY_URL
-              value: "" # kosongkan, supaya browser tidak akses langsung registry
+              value: ""
             - name: NGINX_PROXY_PASS_URL
-              value: http://registry:5000 # nama service registry kamu
+              value: http://registry:5000
             - name: DELETE_IMAGES
               value: "true"
+            - name: REGISTRY_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: registry-auth-secret
+                  key: username
+            - name: REGISTRY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: registry-auth-secret
+                  key: password
