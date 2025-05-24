@@ -4,21 +4,23 @@ metadata:
   name: registry-ui
   namespace: registry
   annotations:
-    ingressClassName: "nginx"
-    cert-manager.io/cluster-issuer: "letsencrypt-staging"
+    kubernetes.io/ingress.class: traefik
+    cert-manager.io/cluster-issuer: letsencrypt-staging
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
   tls:
-  - hosts:
-    - registry.my-mars.my.id
-    secretName: registry-tls
+    - hosts:
+        - registry.my-mars.my.id
+      secretName: registry-tls
   rules:
-  - host: registry.my-mars.my.id
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: registry-ui
-            port:
-              number: 80
+    - host: registry.my-mars.my.id
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: registry-ui
+                port:
+                  number: 80

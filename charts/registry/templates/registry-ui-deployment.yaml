@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: registry-ui
-  namespace: {{ .Values.namespace }}
+  namespace: registry
 spec:
   replicas: 1
   selector:
@@ -20,18 +20,8 @@ spec:
             - containerPort: 80
           env:
             - name: REGISTRY_URL
-              value: http://registry.{{ .Values.namespace }}.svc.cluster.local:80
+              value: "" # kosongkan, supaya browser tidak akses langsung registry
+            - name: NGINX_PROXY_PASS_URL
+              value: http://registry:5000 # nama service registry kamu
             - name: DELETE_IMAGES
               value: "true"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: registry-ui
-  namespace: {{ .Values.namespace }}
-spec:
-  selector:
-    app: registry-ui
-  ports:
-    - port: 80
-      targetPort: 80
